@@ -1,3 +1,45 @@
+void main() {
+  popExample();
+  removeLastExample();
+  removeAfterExample();
+}
+
+void popExample() {
+  var list = LinkedList<int>();
+  list.push(3);
+  list.push(2);
+  list.push(1);
+  print(list); // 1 -> 2 -> 3
+
+  list.pop();
+  print(list); // 2 -> 3 (if you are successful)
+}
+
+void removeLastExample() {
+  var list = LinkedList<int>();
+  list.push(3);
+  list.push(2);
+  list.push(1);
+  print(list); // 1 -> 2 -> 3
+
+  list.removeLast();
+  print(list); // 1 -> 2 (if you are successful)
+}
+
+void removeAfterExample() {
+  var list = LinkedList<int>();
+  list.push(77);
+  list.push(42);
+  list.push(3);
+  list.push(2);
+  list.push(1);
+  print(list); // 1 -> 2 -> 3 -> 42 -> 77
+
+  final node = list.nodeAt(index: 2);
+  list.removeAfter(node!);
+  print(list); // 1 -> 2 -> 3 -> 77 (if you are successful)
+}
+
 class Node<T> {
   Node(this.value);
   T? value;
@@ -67,40 +109,42 @@ class LinkedList<E> {
   }
 
   E? pop() {
-    if (isEmpty) return null;
+    // TODO: remove head
     final value = head?.value;
     head = head?.next;
-    if (head == null) {
+    if (isEmpty) {
       tail = null;
     }
     return value;
   }
 
   E? removeLast() {
+    // TODO: remove tail
     if (head?.next == null) return pop();
 
     var current = head;
     while (current?.next != tail) {
       current = current?.next;
     }
-    // get value
+    //get value
     final value = tail?.value;
-    // update tail
+    //update tail
     tail = current;
-    tail?.next = null;
+    current?.next = null;
 
     return value;
   }
 
   E? removeAfter(Node<E> node) {
+    // TODO: remove node.next
     final value = node.next?.value;
-    // if (node.next == tail) return removeLast();
+
+    // if (node.next == tail) return removeAfter();
     if (node.next == tail) {
       tail = node;
       tail?.next = null;
     }
     node.next = node.next?.next;
-    return value;
   }
 
   @override

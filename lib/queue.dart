@@ -1,5 +1,5 @@
 void main() {
-  final queue = MyQueue<int>();
+  final queue = QueueList<int>();
 }
 
 abstract class Queue<E> {
@@ -8,7 +8,7 @@ abstract class Queue<E> {
   bool get isEmpty;
 }
 
-class MyQueue<E> implements Queue<E> {
+class QueueList<E> implements Queue<E> {
   @override
   final List<E> _list = [];
   E dequeue() => _list.removeAt(0);
