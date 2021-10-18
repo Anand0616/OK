@@ -21,8 +21,6 @@ class QueueList<E> implements Queue<E> {
 
   @override
   String toString() {
-    _list.toString();
-    
+    return _list.toString();
   }
-  
 }
