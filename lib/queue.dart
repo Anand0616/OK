@@ -20,5 +20,9 @@ class QueueList<E> implements Queue<E> {
   bool get isEmpty => _list.isEmpty;
 
   @override
-  String toString() => _list.toString();
+  String toString() {
+    _list.toString();
+    
+  }
+  
 }
