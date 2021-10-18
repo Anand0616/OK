@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dart_application_1/linked_list.dart';
 
 void main() {
@@ -13,7 +11,7 @@ void main() {
 
 abstract class Queue<E> {
   void enqueue(E value);
-  E dequeue();
+  E? dequeue();
   bool get isEmpty;
 }
 
