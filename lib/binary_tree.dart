@@ -1,60 +1,68 @@
-import 'package:dart_application_1/tree_node.dart';
-
 class BinaryTreeNode<T> {
   BinaryTreeNode(this.value, {this.leftChild, this.rightChild});
   T value;
-  BinaryTreeNode? leftChild;
-  BinaryTreeNode? rightChild;
+  BinaryTreeNode<T>? leftChild;
+  BinaryTreeNode<T>? rightChild;
+
+  bool checkIsInTree(T value) {
+    var result = false;
+    traverseInOrder(currentValue) {
+      if (currentValue == value) {
+        result = true;
+      }
+    }
+
+    return result;
+  }
+
+  void traverseInOrder(void Function(T value) doSomething) {
+    leftChild?.traverseInOrder(doSomething);
+    doSomething(value);
+    rightChild?.traverseInOrder(doSomething);
+  }
+
+  void traversePreOrder(void Function(T value) doSomething) {
+    doSomething(value);
+    leftChild?.traversePreOrder(doSomething);
+    rightChild?.traversePreOrder(doSomething);
+  }
+
+  void traversePostOrder(void Function(T value) doSomething) {
+    leftChild?.traversePostOrder(doSomething);
+    rightChild?.traversePostOrder(doSomething);
+    doSomething(value);
+  }
 
   @override
   String toString() {
     final out = StringBuffer();
-    if (rightChild != null) {
-      rightChild!._buildTree(out, true, '');
-    }
-    out.write(value.toString());
-    out.write('\n');
-    if (leftChild != null) {
-      leftChild!._buildTree(out, false, '');
-    }
+
+    final indents = <String>[];
+    rightChild?._buildTree(out, true, indents);
+    out.writeln(value);
+    leftChild?._buildTree(out, false, indents);
+
     return out.toString();
   }
 
-  void _buildTree(StringBuffer out, bool isRight, String indent) {
+  void _buildTree(StringBuffer out, bool isRight, List<String> indents) {
     if (rightChild != null) {
-      rightChild!._buildTree(out, true, indent + (isRight ? '     ' : ' │   '));
+      indents.add(isRight ? '     ' : '│    ');
+      rightChild!._buildTree(out, true, indents);
+      indents.removeLast();
     }
-    out.write(indent);
-    if (isRight) {
-      out.write(' ┌───');
-    } else {
-      out.write(' └───');
-    }
-    out.write(' ');
-    out.write(value.toString());
-    out.write('\n');
+
+    out
+      ..writeAll(indents)
+      ..write(isRight ? '┌─── ' : '└─── ')
+      ..writeln(value);
+
     if (leftChild != null) {
-      leftChild!._buildTree(out, false, indent + (isRight ? ' │   ' : '     '));
+      indents.add(isRight ? '│    ' : '     ');
+      leftChild!._buildTree(out, false, indents);
+      indents.removeLast();
     }
   }
-
-  // void printBinaryTree(TreeNode? root, int level) {
-  //   if (root == null) return;
-  //   printBinaryTree(root.right, level++);
-  //   if (level != 0) {
-  //     for (int i = 0; i < level - 1; i++) {
-  //       print("|\t");
-  //     }
-  //     print("|-------" + root.value);
-  //     print('\n');
-  //   } else
-  //     print(root.value);
-  //   print('\n');
-  //   printBinaryTree(root.left, level++);
-  // }
-
-  // @override
-  // String toString() => printBinaryTree.toString();
 }
 
 // public static void printBinaryTree(TreeNode root, int level){

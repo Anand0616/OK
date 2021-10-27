@@ -9,6 +9,12 @@ void main() {
         rightChild: BinaryTreeNode('FUN'),
       ));
   print(tree);
+  tree.traverseInOrder((value) => print(value));
+  tree.traversePreOrder((value) => print(value));
+  tree.traversePostOrder((value) => print(value));
+
+  tree.checkIsInTree('D');
+  tree.checkIsInTree('S');
   // final tree = createTree();
   // tree.traverseTree();
 }
