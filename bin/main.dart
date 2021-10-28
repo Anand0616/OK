@@ -1,20 +1,34 @@
+import 'package:dart_application_1/binary_seaech_tree.dart';
 import 'package:dart_application_1/binary_tree.dart';
 
 void main() {
-  final tree = BinaryTreeNode('A',
-      leftChild: BinaryTreeNode('D'),
-      rightChild: BinaryTreeNode(
-        'R',
-        leftChild: BinaryTreeNode('T'),
-        rightChild: BinaryTreeNode('FUN'),
-      ));
-  print(tree);
-  tree.traverseInOrder((value) => print(value));
-  tree.traversePreOrder((value) => print(value));
-  tree.traversePostOrder((value) => print(value));
+  final tree = BinarySearchTree<int>();
+  tree.insert(43);
+  tree.insert(10);
+  tree.insert(79);
+  tree.insert(90);
+  tree.insert(12);
+  tree.insert(54);
+  tree.insert(11);
+  tree.insert(9);
+  tree.insert(50);
+  print(tree.root);
 
-  tree.checkIsInTree('D');
-  tree.checkIsInTree('S');
+  // final tree = BinaryTreeNode('A',
+  //     leftChild: BinaryTreeNode('D'),
+  //     rightChild: BinaryTreeNode(
+  //       'R',
+  //       leftChild: BinaryTreeNode('T'),
+  //       rightChild: BinaryTreeNode('FUN'),
+  //     ));
+  // print(tree);
+  // tree.traverseInOrder((value) => print(value));
+  // tree.traversePreOrder((value) => print(value));
+  // tree.traversePostOrder((value) => print(value));
+
+  // tree.checkIsInTree('D');
+  // tree.checkIsInTree('S');
+
   // final tree = createTree();
   // tree.traverseTree();
 }
