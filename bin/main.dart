@@ -1,5 +1,4 @@
 import 'package:dart_application_1/binary_seaech_tree.dart';
-import 'package:dart_application_1/binary_tree.dart';
 
 void main() {
   final tree = BinarySearchTree<int>();
@@ -13,6 +12,10 @@ void main() {
   tree.insert(9);
   tree.insert(50);
   print(tree.root);
+
+  print(tree.contains(79));
+  print(tree.contains(100));
+  print(tree.contains(90));
 
   // final tree = BinaryTreeNode('A',
   //     leftChild: BinaryTreeNode('D'),
