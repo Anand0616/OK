@@ -10,8 +10,7 @@ void main() {
   heap.insert(7);
   heap.insert(2);
   heap.insert(1);
-  heap.insert(20);
-  print(heap);
+
   heap.removeRoot();
   print(heap);
 }
