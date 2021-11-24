@@ -2,11 +2,39 @@ import 'package:dart_application_1/ring_buffer.dart';
 
 import 'linked_list.dart';
 
+import 'heap.dart';
+
 abstract class Queue<E> {
   void enqueue(E value);
   E? dequeue();
   bool get isEmpty;
   //E? peek();
+}
+
+class PriorityQueue<E extends Comparable> implements Queue<E> {
+  PriorityQueue({bool isMin = false}) {
+    if (!isMin) {
+      _heap = Heap<E>(type: HeapType.max);
+    } else {
+      _heap = Heap<E>(type: HeapType.min);
+    }
+  }
+
+  late Heap<E> _heap;
+
+  @override
+  E? dequeue() => _heap.removeRoot();
+
+  @override
+  void enqueue(E value) => _heap.insert(value);
+
+  @override
+  bool get isEmpty => _heap.isEmpty;
+
+  @override
+  String toString() {
+    return _heap.toString();
+  }
 }
 
 class QueueList<E> implements Queue<E> {

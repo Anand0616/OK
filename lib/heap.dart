@@ -1,5 +1,18 @@
+enum HeapType { max, min }
+
 class Heap<E extends Comparable> {
+  Heap({
+    List<E>? values,
+    HeapType type = HeapType.max,
+  }) : _type = type {
+    if (values == null) return;
+    for (final value in values) {
+      insert(value);
+    }
+  }
+
   List<E> _list = [];
+  HeapType _type;
 
   int _leftChild(int parentIndex) => 2 * parentIndex + 1;
 
@@ -22,13 +35,21 @@ class Heap<E extends Comparable> {
 
   E? get peek => (isEmpty) ? null : _list[0];
 
+  bool _firstHasPriority(E valueA, E valueB) {
+    if (_type == HeapType.max) {
+      return valueA.compareTo(valueB) > 0;
+    } else {
+      return valueA.compareTo(valueB) < 0;
+    }
+  }
+
   void _moveUp(int index) {
     var childIndex = index;
     var parentIndex = _parent(childIndex);
     var childValue = _list[childIndex];
     var parentValue = _list[parentIndex];
 
-    while (childValue.compareTo(parentValue) > 0) {
+    while (_firstHasPriority(childValue, parentValue)) {
       _swap(childIndex, parentIndex);
       childIndex = parentIndex;
       parentIndex = _parent(parentIndex);
@@ -37,49 +58,31 @@ class Heap<E extends Comparable> {
     }
   }
 
-  E? removeRoot() {
-    // swap root and last value
-    // int last = _list.length - 1;
-    //  _swap(_parent(0), _parent(last));
-    const root = 0;
-    final last = _list.length - 1;
-    _swap(root, last);
-
-    // move the root down
-    final value = _list.removeLast();
-    _moveDown(0);
-
-    return value;
-  }
-
   void _moveDown(int index) {
     var parentIndex = index;
     var leftIndex = _leftChild(parentIndex);
     var rightIndex = _rightChild(parentIndex);
 
-    var leftChildValue = _list[leftIndex];
-    var rightChildValue = _list[rightIndex];
-    var parentValue = _list[parentIndex];
-
     while (true) {
-      var possible = parentIndex;
-      //check left
-      if (_list[parentIndex].compareTo(_list[leftIndex]) < 0) {
-        possible = leftIndex;
+      var theChosenOne = parentIndex;
+
+      // check left
+      if (_firstHasPriority(_list[leftIndex], _list[parentIndex])) {
+        theChosenOne = leftIndex;
       }
 
-      //check right
+      // check right
       if (rightIndex < _list.length &&
-          _list[possible].compareTo(_list[rightIndex]) < 0) {
-        possible = rightIndex;
+          _firstHasPriority(_list[rightIndex], _list[parentIndex])) {
+        theChosenOne = rightIndex;
       }
 
-      if (parentIndex == possible) {
+      if (parentIndex == theChosenOne) {
         return;
       }
 
-      _swap(parentIndex, possible);
-      parentIndex = possible;
+      _swap(parentIndex, theChosenOne);
+      parentIndex = theChosenOne;
       leftIndex = _leftChild(parentIndex);
       rightIndex = _rightChild(parentIndex);
 
@@ -87,67 +90,56 @@ class Heap<E extends Comparable> {
       if (leftIndex >= length) {
         return;
       }
-
-      // if (leftChildValue.compareTo(rightChildValue) > 0) {
-      //   if (parentValue.compareTo(leftChildValue) < 0) {
-      //     _swap(parentIndex, leftIndex);
-      //     parentIndex = leftIndex;
-      //     leftIndex = _leftChild(parentIndex);
-      //     rightIndex = _rightChild(parentIndex);
-      //     leftChildValue = _list[leftIndex];
-      //     rightChildValue = _list[rightIndex];
-      //   } else {
-      //     break;
-      //   }
-      // } else {
-      //   if (parentValue.compareTo(rightChildValue) < 0) {
-      //     _swap(parentIndex, rightIndex);
-      //     parentIndex = leftIndex;
-      //     leftIndex = _leftChild(parentIndex);
-      //     rightIndex = _rightChild(parentIndex);
-      //     leftChildValue = _list[leftIndex];
-      //     rightChildValue = _list[rightIndex];
-      //   } else {
-      //     break;
-      //   }
-      // }
     }
+  }
+
+  E? removeRoot() {
+    if (_list.isEmpty) return null;
+
+    // swap root and last value
+    const root = 0;
+    final last = _list.length - 1;
+    _swap(root, last);
+
+    // move the root down
+    final value = _list.removeLast();
+    _moveDown(0);
+    return value;
   }
 
   @override
   String toString() {
-    var myString = '        '; //_list[i]??
-    for (final i in _list) {
-      myString = myString + '      ' + i.toString();
+    final out = StringBuffer();
 
-      if (i == 5) {
-        myString = myString + '               1' + '\n';
-        for (final a in _list) {
-          if (a == 2) {
-            myString = myString + ' -----';
-            myString = myString + '\n';
-            myString = myString + '|';
-            myString = myString + '\n';
-            myString = myString + '2';
-            return myString;
-          }
-        }
-      }
-      myString = myString + '\n';
-      myString = myString + '       -----     -----';
-      myString = myString + '\n';
-      myString = myString + '      |               |';
-      myString = myString + '\n';
+    if (_rightChild(0) < _list.length) {
+      _buildTree(_rightChild(0), out, true, '');
     }
-    return myString;
-  }
-}
+    out.writeln(_list[0]);
+    if (_leftChild(0) < _list.length) {
+      _buildTree(_leftChild(0), out, false, '');
+    }
 
-// String toString() {
-// var myString = '';
-// traverseinorder((value) {
-// myString = myString + value.toString();
-// mtString = myString + '';
-// });
-// return myString;
-//}
+    return out.toString();
+  }
+
+  void _buildTree(int index, StringBuffer out, bool isRight, String indent) {
+    if (_rightChild(index) < _list.length) {
+      _buildTree(_rightChild(index), out, true,
+          indent + (isRight ? '     ' : '│    '));
+    }
+
+    out
+      ..write(indent)
+      ..write(isRight ? '┌─── ' : '└─── ')
+      ..writeln(_list[index]);
+
+    if (_leftChild(index) < _list.length) {
+      _buildTree(_leftChild(index), out, false,
+          indent + (isRight ? '│    ' : '     '));
+    }
+  }
+
+  removeAt(int i) {}
+
+  add(value) {}
+}

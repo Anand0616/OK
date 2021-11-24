@@ -1,19 +1,25 @@
 import 'package:dart_application_1/binary_seaech_tree.dart';
+import 'package:dart_application_1/queue.dart';
 import 'package:dart_application_1/tree_node.dart';
 import 'package:dart_application_1/heap.dart';
 
 void main() {
-  // final list = [10, 5, 7, 2, 1];
-  final heap = Heap();
-  heap.insert(10);
-  heap.insert(5);
-  heap.insert(7);
-  heap.insert(2);
-  heap.insert(1);
-
-  heap.removeRoot();
-  print(heap);
+  final queue = PriorityQueue(isMin: true);
+  queue.enqueue(5);
+  queue.enqueue(10);
+  queue.enqueue(3);
+  print(queue.dequeue());
 }
+// // final list = [10, 5, 7, 2, 1];
+  // final heap = Heap();
+  // heap.insert(10);
+  // heap.insert(5);
+  // heap.insert(7);
+  // heap.insert(2);
+  // // heap.insert(1);
+  // // heap.insert(3);
+  // // heap.removeRoot();
+  // print(heap);
 
 // final tree = BinarySearchTree<int>();
 // tree.insert(43);
