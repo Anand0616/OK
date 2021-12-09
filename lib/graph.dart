@@ -1,5 +1,7 @@
+import 'package:dart_application_1/queue.dart';
 //TODO: create a vertex
 //value
+
 class Vertex<T> {
   Vertex(this.value, this.id);
 
@@ -27,7 +29,7 @@ class Edge<T> {
   @override
   String toString() {
     // TODO: implement toString
-    return ("from $source to $destination").toString();
+    return "from $source to $destination";
   }
 }
 
@@ -56,5 +58,31 @@ class Graph<E> {
   String toString() {
     //TODO: homework
     return _connections.toString();
+  }
+
+  List<Vertex<E>> breadthFirstSearch(Vertex<E> source) {
+    final returnList = <Vertex<E>>[];
+    Set<Vertex<E>> visited = {};
+    final queue = QueueList<Vertex<E>>();
+
+    visited.add(source);
+    queue.enqueue(source);
+    returnList.add(source);
+
+    //visit destiantions of A
+    while (!queue.isEmpty) {
+      final current = queue.dequeue();
+      final edges = _connections[current] ?? [];
+      for (final edge in edges) {
+        final destination = edge.destination;
+        if (!visited.contains(destination)) {
+          visited.add(destination);
+          returnList.add(destination);
+          queue.enqueue(destination);
+        }
+      }
+    }
+
+    return returnList;
   }
 }
