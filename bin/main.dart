@@ -4,12 +4,25 @@ import 'package:dart_application_1/queue.dart';
 import 'package:dart_application_1/tree_node.dart';
 import 'package:dart_application_1/heap.dart';
 import 'package:dart_application_1/heap_sort.dart';
+import 'package:dart_application_1/graph.dart';
 
 void main() {
-  final list = [12, 7, 15, 9, 1, 3];
-  final sorted = heapSort(list);
-  print(sorted);
+  final graph = Graph();
+
+  final ub = graph.createVertex('Ulaanbaatar');
+  final nyc = graph.createVertex('New York City');
+  final kalama = graph.createVertex('Kalama');
+
+  graph.addEdge(ub, kalama, 1);
+  print(graph);
 }
+
+
+// void main() {
+//   final list = [12, 7, 15, 9, 1, 3];
+//   final sorted = heapSort(list);
+//   print(sorted);
+// }
 
 // void main() {
 //   // 3 1 3 3 8 10 6 2
