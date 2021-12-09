@@ -1,15 +1,33 @@
 import 'package:dart_application_1/binary_seaech_tree.dart';
+import 'package:dart_application_1/mergeSort.dart';
 import 'package:dart_application_1/queue.dart';
 import 'package:dart_application_1/tree_node.dart';
 import 'package:dart_application_1/heap.dart';
+import 'package:dart_application_1/heap_sort.dart';
 
 void main() {
-  final queue = PriorityQueue(isMin: true);
-  queue.enqueue(5);
-  queue.enqueue(10);
-  queue.enqueue(3);
-  print(queue.dequeue());
+  final list = [12, 7, 15, 9, 1, 3];
+  final sorted = heapSort(list);
+  print(sorted);
 }
+
+// void main() {
+//   // 3 1 3 3 8 10 6 2
+//   final list = [4, 3, 1, 4, 8, 2, 5];
+//   print(list);
+//   final sorted = mergeSort(list);
+//   print(sorted);
+// }
+
+// void main() {
+//   final queue = PriorityQueue(isMin: true);
+//   queue.enqueue(5);
+//   queue.enqueue(10);
+//   queue.enqueue(3);
+//   print(queue.dequeue());
+// }
+
+
 // // final list = [10, 5, 7, 2, 1];
   // final heap = Heap();
   // heap.insert(10);
